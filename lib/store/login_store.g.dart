@@ -9,6 +9,13 @@ part of 'login_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$LoginStore on _LoginStoreBase, Store {
+  Computed<Function> _$loginPressedComputed;
+
+  @override
+  Function get loginPressed =>
+      (_$loginPressedComputed ??= Computed<Function>(() => super.loginPressed,
+              name: '_LoginStoreBase.loginPressed'))
+          .value;
   Computed<bool> _$isEmailValidComputed;
 
   @override
@@ -22,13 +29,6 @@ mixin _$LoginStore on _LoginStoreBase, Store {
   bool get isPasswordValid =>
       (_$isPasswordValidComputed ??= Computed<bool>(() => super.isPasswordValid,
               name: '_LoginStoreBase.isPasswordValid'))
-          .value;
-  Computed<bool> _$isFormValidadComputed;
-
-  @override
-  bool get isFormValidad =>
-      (_$isFormValidadComputed ??= Computed<bool>(() => super.isFormValidad,
-              name: '_LoginStoreBase.isFormValidad'))
           .value;
 
   final _$emailAtom = Atom(name: '_LoginStoreBase.email');
@@ -76,6 +76,28 @@ mixin _$LoginStore on _LoginStoreBase, Store {
     });
   }
 
+  final _$loadingAtom = Atom(name: '_LoginStoreBase.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  final _$loginAsyncAction = AsyncAction('_LoginStoreBase.login');
+
+  @override
+  Future<void> login() {
+    return _$loginAsyncAction.run(() => super.login());
+  }
+
   final _$_LoginStoreBaseActionController =
       ActionController(name: '_LoginStoreBase');
 
@@ -118,9 +140,10 @@ mixin _$LoginStore on _LoginStoreBase, Store {
 email: ${email},
 password: ${password},
 visible: ${visible},
+loading: ${loading},
+loginPressed: ${loginPressed},
 isEmailValid: ${isEmailValid},
-isPasswordValid: ${isPasswordValid},
-isFormValidad: ${isFormValidad}
+isPasswordValid: ${isPasswordValid}
     ''';
   }
 }

@@ -18,10 +18,26 @@ abstract class _LoginStoreBase with Store {
   void setPassword(String value) => password = value;
 
   @observable
-  bool visible = false;
+  bool visible = true;
 
   @action
   void setVisible() => visible = !visible;
+
+  @observable
+  bool loading = false;
+
+  @action
+  Future<void> login() async{
+    loading = true;
+    
+    await Future.delayed(Duration(seconds: 2));
+
+    loading = false;
+  }
+
+  @computed
+  Function get loginPressed => 
+  (isEmailValid && isPasswordValid && !loading) ? login : null;
 
 
   @computed
@@ -29,10 +45,5 @@ abstract class _LoginStoreBase with Store {
 
   @computed
   bool get isPasswordValid => password.length > 6;
-
-  @computed
-  bool get isFormValidad => isEmailValid && isPasswordValid;
-
-
 
 } 
