@@ -33,7 +33,11 @@ abstract class _LoginStoreBase with Store {
     await Future.delayed(Duration(seconds: 2));
 
     loading = false;
+    loggedIn = true;
   }
+
+  @observable
+  bool loggedIn = false;
 
   @computed
   Function get loginPressed => 
