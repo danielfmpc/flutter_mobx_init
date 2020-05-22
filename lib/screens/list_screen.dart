@@ -16,14 +16,6 @@ class _ListScreenState extends State<ListScreen> {
   ListStore listStore = ListStore();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    autorun((_){
-      print(listStore.isPreenchido);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -70,31 +62,35 @@ class _ListScreenState extends State<ListScreen> {
                           return CustomTextField(
                             hint: 'Tarefa',
                             onChanged: listStore.setNewTodoTitle,
-                            suffix: listStore.isPreenchido ? CustomIconButton(
-                              radius: 32,
-                              iconData:  Icons.add,
-                              onTap: () {},
-                            ): null,
+                            suffix: listStore.isPreenchido
+                                ? CustomIconButton(
+                                    radius: 32,
+                                    iconData: Icons.add,
+                                    onTap: listStore.todoListAdd,
+                                  )
+                                : null,
                           );
                         }),
                         const SizedBox(
                           height: 8,
                         ),
                         Expanded(
-                          child: ListView.separated(
-                            itemCount: 10,
-                            itemBuilder: (_, index) {
-                              return ListTile(
-                                title: Text(
-                                  'Item $index',
-                                ),
-                                onTap: () {},
-                              );
-                            },
-                            separatorBuilder: (_, __) {
-                              return Divider();
-                            },
-                          ),
+                          child: Observer(builder: (_) {
+                            return ListView.separated(
+                              itemCount: listStore.todoList.length,
+                              itemBuilder: (_, index) {
+                                return ListTile(
+                                  title: Text(
+                                    listStore.todoList[index],
+                                  ),
+                                  onTap: () {},
+                                );
+                              },
+                              separatorBuilder: (_, __) {
+                                return Divider();
+                              },
+                            );
+                          }),
                         ),
                       ],
                     ),
