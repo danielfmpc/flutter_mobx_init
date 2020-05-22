@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 part 'list_store.g.dart';
 
@@ -13,4 +14,11 @@ abstract class _ListStoreBase with Store {
 
   @computed
   bool get isPreenchido => newTodoTitle.isNotEmpty;
+
+  ObservableList<String> todoList = ObservableList<String>();
+
+  @action
+  void todoListAdd(){
+    todoList.add(newTodoTitle);
+  }
 }
